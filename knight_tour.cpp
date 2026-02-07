@@ -27,43 +27,43 @@ bool goToNextPosition(std::pair<int, int> &current_position, std::vector<std::ve
     visited_squares[row][col] = UP_RIGHT;
     return true;
   }
-  else if (row - 1 >= 0 && col + 2 < BOARD_SIZE && visited_squares[row - 1][col + 2] == UNVISITED && ignored_direction < RIGHT_UP)
+  if (row - 1 >= 0 && col + 2 < BOARD_SIZE && visited_squares[row - 1][col + 2] == UNVISITED && ignored_direction < RIGHT_UP)
   {
     current_position = std::make_pair(row - 1, col + 2);
     visited_squares[row][col] = RIGHT_UP;
     return true;
   }
-  else if (row + 1 < BOARD_SIZE && col + 2 < BOARD_SIZE && visited_squares[row + 1][col + 2] == UNVISITED && ignored_direction < RIGHT_DOWN)
+  if (row + 1 < BOARD_SIZE && col + 2 < BOARD_SIZE && visited_squares[row + 1][col + 2] == UNVISITED && ignored_direction < RIGHT_DOWN)
   {
     current_position = std::make_pair(row + 1, col + 2);
     visited_squares[row][col] = RIGHT_DOWN;
     return true;
   }
-  else if (row + 2 < BOARD_SIZE && col + 1 < BOARD_SIZE && visited_squares[row + 2][col + 1] == UNVISITED && ignored_direction < DOWN_RIGHT)
+  if (row + 2 < BOARD_SIZE && col + 1 < BOARD_SIZE && visited_squares[row + 2][col + 1] == UNVISITED && ignored_direction < DOWN_RIGHT)
   {
     current_position = std::make_pair(row + 2, col + 1);
     visited_squares[row][col] = DOWN_RIGHT;
     return true;
   }
-  else if (row + 2 < BOARD_SIZE && col - 1 >= 0 && visited_squares[row + 2][col - 1] == UNVISITED && ignored_direction < DOWN_LEFT)
+  if (row + 2 < BOARD_SIZE && col - 1 >= 0 && visited_squares[row + 2][col - 1] == UNVISITED && ignored_direction < DOWN_LEFT)
   {
     current_position = std::make_pair(row + 2, col - 1);
     visited_squares[row][col] = DOWN_LEFT;
     return true;
   }
-  else if (row + 1 < BOARD_SIZE && col - 2 >= 0 && visited_squares[row + 1][col - 2] == UNVISITED && ignored_direction < LEFT_DOWN)
+  if (row + 1 < BOARD_SIZE && col - 2 >= 0 && visited_squares[row + 1][col - 2] == UNVISITED && ignored_direction < LEFT_DOWN)
   {
     current_position = std::make_pair(row + 1, col - 2);
     visited_squares[row][col] = LEFT_DOWN;
     return true;
   }
-  else if (row - 1 >= 0 && col - 2 >= 0 && visited_squares[row - 1][col - 2] == UNVISITED && ignored_direction < LEFT_UP)
+  if (row - 1 >= 0 && col - 2 >= 0 && visited_squares[row - 1][col - 2] == UNVISITED && ignored_direction < LEFT_UP)
   {
     current_position = std::make_pair(row - 1, col - 2);
     visited_squares[row][col] = LEFT_UP;
     return true;
   }
-  else if (row - 2 >= 0 && col - 1 >= 0 && visited_squares[row - 2][col - 1] == UNVISITED && ignored_direction < UP_LEFT)
+  if (row - 2 >= 0 && col - 1 >= 0 && visited_squares[row - 2][col - 1] == UNVISITED && ignored_direction < UP_LEFT)
   {
     current_position = std::make_pair(row - 2, col - 1);
     visited_squares[row][col] = UP_LEFT;
