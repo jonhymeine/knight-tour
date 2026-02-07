@@ -6,100 +6,11 @@
 #include <vector>
 #include <cstdlib>
 
+#include "knight_tour.h"
+
 using namespace std;
 
 int BOARD_SIZE = 8;
-
-enum Direction
-{
-  UNVISITED,
-  VISITED,
-  UP_RIGHT,
-  RIGHT_UP,
-  RIGHT_DOWN,
-  DOWN_RIGHT,
-  DOWN_LEFT,
-  LEFT_DOWN,
-  LEFT_UP,
-  UP_LEFT,
-};
-
-void printMatrix(const vector<vector<int>> &matrix)
-{
-  for (int i = 0; i < BOARD_SIZE; i++)
-  {
-    for (int j = 0; j < BOARD_SIZE; j++)
-    {
-      cout << setw(2) << matrix[i][j] << " ";
-    }
-    cout << endl;
-  }
-}
-
-bool goToNextPosition(pair<int, int> &current_position, vector<vector<Direction>> &visited_squares, Direction ignored_direction = UNVISITED)
-{
-  auto [row, col] = current_position;
-
-  if (row - 2 >= 0 && col + 1 < BOARD_SIZE && visited_squares[row - 2][col + 1] == UNVISITED && ignored_direction < UP_RIGHT)
-  {
-    current_position = make_pair(row - 2, col + 1);
-    visited_squares[row][col] = UP_RIGHT;
-    return true;
-  }
-  else if (row - 1 >= 0 && col + 2 < BOARD_SIZE && visited_squares[row - 1][col + 2] == UNVISITED && ignored_direction < RIGHT_UP)
-  {
-    current_position = make_pair(row - 1, col + 2);
-    visited_squares[row][col] = RIGHT_UP;
-    return true;
-  }
-  else if (row + 1 < BOARD_SIZE && col + 2 < BOARD_SIZE && visited_squares[row + 1][col + 2] == UNVISITED && ignored_direction < RIGHT_DOWN)
-  {
-    current_position = make_pair(row + 1, col + 2);
-    visited_squares[row][col] = RIGHT_DOWN;
-    return true;
-  }
-  else if (row + 2 < BOARD_SIZE && col + 1 < BOARD_SIZE && visited_squares[row + 2][col + 1] == UNVISITED && ignored_direction < DOWN_RIGHT)
-  {
-    current_position = make_pair(row + 2, col + 1);
-    visited_squares[row][col] = DOWN_RIGHT;
-    return true;
-  }
-  else if (row + 2 < BOARD_SIZE && col - 1 >= 0 && visited_squares[row + 2][col - 1] == UNVISITED && ignored_direction < DOWN_LEFT)
-  {
-    current_position = make_pair(row + 2, col - 1);
-    visited_squares[row][col] = DOWN_LEFT;
-    return true;
-  }
-  else if (row + 1 < BOARD_SIZE && col - 2 >= 0 && visited_squares[row + 1][col - 2] == UNVISITED && ignored_direction < LEFT_DOWN)
-  {
-    current_position = make_pair(row + 1, col - 2);
-    visited_squares[row][col] = LEFT_DOWN;
-    return true;
-  }
-  else if (row - 1 >= 0 && col - 2 >= 0 && visited_squares[row - 1][col - 2] == UNVISITED && ignored_direction < LEFT_UP)
-  {
-    current_position = make_pair(row - 1, col - 2);
-    visited_squares[row][col] = LEFT_UP;
-    return true;
-  }
-  else if (row - 2 >= 0 && col - 1 >= 0 && visited_squares[row - 2][col - 1] == UNVISITED && ignored_direction < UP_LEFT)
-  {
-    current_position = make_pair(row - 2, col - 1);
-    visited_squares[row][col] = UP_LEFT;
-    return true;
-  }
-
-  return false;
-}
-
-bool isReachable(pair<int, int> from, pair<int, int> to)
-{
-  auto [from_row, from_col] = from;
-  auto [to_row, to_col] = to;
-
-  return (abs(from_row - to_row) == 2 && abs(from_col - to_col) == 1) ||
-         (abs(from_row - to_row) == 1 && abs(from_col - to_col) == 2);
-}
 
 int main(int argc, char *argv[])
 {
@@ -197,6 +108,6 @@ int main(int argc, char *argv[])
   cout << "Time spent: " << duration.count() << " ms\n";
   cout << "Number of backtracks: " << backtracks << "\n";
 
-  printMatrix(board);
+  printBoard(board);
   return 0;
 }
