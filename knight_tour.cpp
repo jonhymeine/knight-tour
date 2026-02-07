@@ -73,6 +73,65 @@ bool goToNextPosition(std::pair<int, int> &current_position, std::vector<std::ve
   return false;
 }
 
+bool goToNextPositionHeuristic(std::pair<int, int> &current_position, std::vector<std::vector<Direction>> &visited_squares, const std::vector<std::vector<int>> &possible_moves_board, Direction ignored_direction)
+{
+  auto [row, col] = current_position;
+
+  const int delta_row[8] = {-2, -1, 1, 2, 2, 1, -1, -2};
+  const int delta_col[8] = {1, 2, 2, 1, -1, -2, -2, -1};
+  const Direction dirs[8] = {UP_RIGHT, RIGHT_UP, RIGHT_DOWN, DOWN_RIGHT, DOWN_LEFT, LEFT_DOWN, LEFT_UP, UP_LEFT};
+
+  int best_row = -1, best_col = -1;
+  Direction best_dir = UNVISITED;
+  int best_score = 9; // more than max possible (8)
+
+  for (int k = 0; k < 8; ++k)
+  {
+    if (dirs[k] <= ignored_direction)
+      continue;
+
+    int new_row = row + delta_row[k];
+    int new_col = col + delta_col[k];
+
+    // Check bounds and if unvisited
+    if (new_row < 0 || new_row >= BOARD_SIZE || new_col < 0 || new_col >= BOARD_SIZE)
+      continue;
+    if (visited_squares[new_row][new_col] != UNVISITED)
+      continue;
+
+    int score = possible_moves_board[new_row][new_col];
+
+    if (score < best_score)
+    {
+      best_score = score;
+      best_row = new_row;
+      best_col = new_col;
+      best_dir = dirs[k];
+    }
+  }
+
+  if (best_row == -1)
+    return false;
+
+  current_position = std::make_pair(best_row, best_col);
+  visited_squares[row][col] = best_dir;
+  return true;
+}
+
+void updatePossibleMoves(std::vector<std::vector<int>> &possible_moves_board, int row, int col, int delta)
+{
+  const int delta_row[8] = {-2, -1, 1, 2, 2, 1, -1, -2};
+  const int delta_col[8] = {1, 2, 2, 1, -1, -2, -2, -1};
+
+  for (int k = 0; k < 8; ++k)
+  {
+    int new_row = row + delta_row[k];
+    int new_col = col + delta_col[k];
+    if (new_row >= 0 && new_row < BOARD_SIZE && new_col >= 0 && new_col < BOARD_SIZE)
+      possible_moves_board[new_row][new_col] += delta;
+  }
+}
+
 bool isReachable(std::pair<int, int> from, std::pair<int, int> to)
 {
   auto [from_row, from_col] = from;
@@ -80,4 +139,26 @@ bool isReachable(std::pair<int, int> from, std::pair<int, int> to)
 
   return (std::abs(from_row - to_row) == 2 && std::abs(from_col - to_col) == 1) ||
          (std::abs(from_row - to_row) == 1 && std::abs(from_col - to_col) == 2);
+}
+
+void mapPossibleMoves(std::vector<std::vector<int>> &board)
+{
+  const int delta_row[8] = {-2, -1, 1, 2, 2, 1, -1, -2};
+  const int delta_col[8] = {1, 2, 2, 1, -1, -2, -2, -1};
+
+  for (int row = 0; row < BOARD_SIZE; ++row)
+  {
+    for (int col = 0; col < BOARD_SIZE; ++col)
+    {
+      int cnt = 0;
+      for (int k = 0; k < 8; ++k)
+      {
+        int new_row = row + delta_row[k];
+        int new_col = col + delta_col[k];
+        if (new_row >= 0 && new_row < BOARD_SIZE && new_col >= 0 && new_col < BOARD_SIZE)
+          ++cnt;
+      }
+      board[row][col] = cnt;
+    }
+  }
 }
