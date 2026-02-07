@@ -129,7 +129,7 @@ int main(int argc, char *argv[])
   }
 
   pair<int, int> knight_position = initial_position;
-  int unvisited_squares_count = BOARD_SIZE * BOARD_SIZE;
+  const int max_steps = BOARD_SIZE * BOARD_SIZE;
   vector<vector<Direction>> visited_squares(BOARD_SIZE, vector<Direction>(BOARD_SIZE, UNVISITED));
   Direction ignored_direction = UNVISITED;
   stack<pair<int, int>> move_history;
@@ -140,7 +140,7 @@ int main(int argc, char *argv[])
 
   auto start_time = chrono::high_resolution_clock::now();
 
-  while (unvisited_squares_count > 0)
+  while (step <= max_steps)
   {
     // Mark current position as visited if not already
     if (visited_squares[knight_position.first][knight_position.second] == UNVISITED)
@@ -148,11 +148,10 @@ int main(int argc, char *argv[])
       visited_squares[knight_position.first][knight_position.second] = VISITED;
       board[knight_position.first][knight_position.second] = step++;
       move_history.push(knight_position);
-      unvisited_squares_count--;
       cout << "Knight is at position: (" << knight_position.first << ", " << knight_position.second << ")\n";
     }
 
-    if (unvisited_squares_count == 0)
+    if (step == max_steps + 1)
       break;
 
     bool moved = goToNextPosition(knight_position, visited_squares, ignored_direction);
@@ -176,7 +175,6 @@ int main(int argc, char *argv[])
       board[current.first][current.second] = 0;
       step--;
       move_history.pop();
-      unvisited_squares_count++;
 
       if (move_history.empty())
       {
