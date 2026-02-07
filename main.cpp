@@ -14,6 +14,8 @@ int BOARD_SIZE = 8;
 
 int main(int argc, char *argv[])
 {
+  bool brute_force_mode = false;
+
   if (argc < 2)
   {
     cout << "Usage: " << argv[0] << " <board_size>\n";
@@ -25,6 +27,12 @@ int main(int argc, char *argv[])
   {
     cout << "Board size must be at least 5.\n";
     return 1;
+  }
+
+  if (argc > 2 && string(argv[2]) == "--brute-force")
+  {
+    cout << "Brute-force mode enabled. This may take a long time for larger boards.\n";
+    brute_force_mode = true;
   }
 
   pair<int, int> initial_position;
@@ -46,6 +54,11 @@ int main(int argc, char *argv[])
   stack<pair<int, int>> move_history;
   int backtracks = 0;
 
+  vector<vector<int>> possible_moves_board(BOARD_SIZE, vector<int>(BOARD_SIZE));
+
+  if (!brute_force_mode)
+    mapPossibleMoves(possible_moves_board);
+
   vector<vector<int>> board(BOARD_SIZE, vector<int>(BOARD_SIZE, 0));
   int step = 1;
 
@@ -59,13 +72,19 @@ int main(int argc, char *argv[])
       visited_squares[knight_position.first][knight_position.second] = VISITED;
       board[knight_position.first][knight_position.second] = step++;
       move_history.push(knight_position);
+
+      if (!brute_force_mode)
+        updatePossibleMoves(possible_moves_board, knight_position.first, knight_position.second, -1);
+
       cout << "Knight is at position: (" << knight_position.first << ", " << knight_position.second << ")\n";
     }
 
     if (step == max_steps + 1)
       break;
 
-    bool moved = goToNextPosition(knight_position, visited_squares, ignored_direction);
+    bool moved = brute_force_mode
+                     ? goToNextPosition(knight_position, visited_squares, ignored_direction)
+                     : goToNextPositionHeuristic(knight_position, visited_squares, possible_moves_board, ignored_direction);
 
     if (moved)
       ignored_direction = UNVISITED;
@@ -83,6 +102,10 @@ int main(int argc, char *argv[])
       visited_squares[current.first][current.second] = UNVISITED;
       board[current.first][current.second] = 0;
       step--;
+
+      if (!brute_force_mode)
+        updatePossibleMoves(possible_moves_board, current.first, current.second, 1);
+
       move_history.pop();
 
       if (move_history.empty())
