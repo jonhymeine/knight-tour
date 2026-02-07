@@ -157,9 +157,7 @@ int main(int argc, char *argv[])
     bool moved = goToNextPosition(knight_position, visited_squares, ignored_direction);
 
     if (moved)
-    {
       ignored_direction = UNVISITED;
-    }
     else
     {
       backtracks++;
@@ -192,13 +190,9 @@ int main(int argc, char *argv[])
   auto duration = chrono::duration_cast<chrono::milliseconds>(end_time - start_time);
 
   if (isReachable(knight_position, initial_position))
-  {
     cout << "A closed knight's tour was found!\n";
-  }
   else
-  {
     cout << "An open knight's tour was found.\n";
-  }
 
   cout << "Time spent: " << duration.count() << " ms\n";
   cout << "Number of backtracks: " << backtracks << "\n";
