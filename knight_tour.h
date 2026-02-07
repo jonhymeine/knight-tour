@@ -4,6 +4,8 @@
 #include <vector>
 #include <utility>
 
+using namespace std;
+
 extern int BOARD_SIZE;
 
 enum Direction
@@ -24,7 +26,7 @@ enum Direction
  * @brief Prints the board matrix
  * @param matrix The board matrix to print
  */
-void printBoard(const std::vector<std::vector<int>> &matrix);
+void printBoard(const vector<vector<int>> &matrix);
 
 /**
  * @brief Attempts to move the knight to the next valid position
@@ -33,8 +35,8 @@ void printBoard(const std::vector<std::vector<int>> &matrix);
  * @param ignored_direction Direction to ignore (for backtracking)
  * @return true if a valid move was found, false otherwise
  */
-bool goToNextPosition(std::pair<int, int> &current_position,
-                      std::vector<std::vector<Direction>> &visited_squares,
+bool goToNextPosition(pair<int, int> &current_position,
+                      vector<vector<Direction>> &visited_squares,
                       Direction ignored_direction = UNVISITED);
 
 /**
@@ -45,9 +47,9 @@ bool goToNextPosition(std::pair<int, int> &current_position,
  * @param ignored_direction Direction to ignore (for backtracking)
  * @return true if a valid move was found, false otherwise
  */
-bool goToNextPositionHeuristic(std::pair<int, int> &current_position,
-                               std::vector<std::vector<Direction>> &visited_squares,
-                               const std::vector<std::vector<int>> &possible_moves_board,
+bool goToNextPositionHeuristic(pair<int, int> &current_position,
+                               vector<vector<Direction>> &visited_squares,
+                               const vector<vector<int>> &possible_moves_board,
                                Direction ignored_direction = UNVISITED);
 
 /**
@@ -57,7 +59,7 @@ bool goToNextPositionHeuristic(std::pair<int, int> &current_position,
  * @param col Column of the square being visited/unvisited
  * @param delta -1 when visiting (decrement neighbors), +1 when backtracking (increment neighbors)
  */
-void updatePossibleMoves(std::vector<std::vector<int>> &possible_moves_board, int row, int col, int delta);
+void updatePossibleMoves(vector<vector<int>> &possible_moves_board, int row, int col, int delta);
 
 /**
  * @brief Checks if two positions are reachable by a knight's move
@@ -65,12 +67,12 @@ void updatePossibleMoves(std::vector<std::vector<int>> &possible_moves_board, in
  * @param to Target position
  * @return true if positions are reachable by a valid knight move
  */
-bool isReachable(std::pair<int, int> from, std::pair<int, int> to);
+bool isReachable(pair<int, int> from, pair<int, int> to);
 
 /**
  * @brief Maps the number of possible moves from each square on the board
  * @param possible_moves_board Matrix to be filled with the count of possible moves from each square
  */
-void mapPossibleMoves(std::vector<std::vector<int>> &possible_moves_board);
+void mapPossibleMoves(vector<vector<int>> &possible_moves_board);
 
 #endif // KNIGHT_TOUR_H
