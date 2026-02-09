@@ -121,14 +121,15 @@ int main(int argc, char *argv[])
   }
 
   auto end_time = chrono::high_resolution_clock::now();
-  auto duration = chrono::duration_cast<chrono::milliseconds>(end_time - start_time);
+  auto duration = chrono::duration_cast<chrono::microseconds>(end_time - start_time);
 
   if (isReachable(knight_position, initial_position))
     cout << "A closed knight's tour was found!\n";
   else
     cout << "An open knight's tour was found.\n";
 
-  cout << "Time spent: " << duration.count() << " ms\n";
+  cout << fixed << setprecision(6);
+  cout << "Time spent: " << duration.count() / 1000.0 << " ms\n";
   cout << "Number of backtracks: " << backtracks << "\n";
 
   printBoard(board);
